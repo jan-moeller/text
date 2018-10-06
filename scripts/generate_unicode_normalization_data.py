@@ -298,17 +298,92 @@ if __name__ == "__main__":
     )
     compositions_map = '    { ' + ' },\n    { '.join(item_strings) + ' },\n'
 
+    min_first = 1000000000
+    max_first = 0
+    min_second = 1000000000
+    max_second = 0
+    for x in composition_mapping:
+        min_first = min(min_first, x[0][0])
+        max_first = max(max_first, x[0][0])
+        min_second = min(min_second, x[0][1])
+        max_second = max(max_second, x[0][1])
+        print hex(x[0][0]), hex(x[0][1])
+
+    print hex(min_first), hex(max_first), hex(min_second), hex(max_second)
+
     cpp_file = open('normalization_data_compose.cpp', 'w')
     cpp_file.write(compose_file_form.format(compositions_map, len(item_strings)))
 
 
     cccs_dict = cccs('DerivedCombiningClass.txt')
 
+#    ccc_keys = sorted(cccs_dict.keys())
+#    min_ccc_cp = ccc_keys[0]
+#    max_ccc_cp = ccc_keys[-1]
+#    rle_cccs = [[ccc_keys[0], cccs_dict[ccc_keys[0]], 1]]
+#    prev_k = rle_cccs[0][0]
+#    max_run_length = 1
+#    for k in ccc_keys[1:]:
+#        back = rle_cccs[-1]
+#        this_ccc = cccs_dict[k]
+#        if k == prev_k + 1 and this_ccc == back[1]:
+#            back[2] += 1
+#            max_run_length = max(max_run_length, back[2])
+#        else:
+#            rle_cccs.append([k, this_ccc, 1])
+#        prev_k = k
+#
+#    print '''\
+#struct ccc_rle_element
+#{
+#    uint32_t cp_;
+#    uint8_t ccc_;
+#    uint8_t run_length_;
+#};
+#'''
+#    def open_table(cp):
+#        print 'constexpr ccc_rle_element ccc_rle_table[] = {{'.format(hex(cp >> 8))
+#    def element(e):
+#        print '    {{{}, {}, {}}},'.format(hex(e[0]), e[1], e[2])
+#    def close_table():
+#        print '};'
+#
+#    prev_table = rle_cccs[0][0] >> 8
+#    open_table(rle_cccs[0][0])
+#    byte_masks = {}
+#    byte_masks[prev_table] = 0
+#    for rle_ccc in rle_cccs:
+#        this_table = rle_ccc[0] >> 8
+#        if this_table != prev_table:
+#            byte_masks[this_table] = 0
+#            prev_table = this_table
+#        element(rle_ccc)
+#        byte_masks[this_table] |= rle_ccc[0] & 0xff
+#    close_table()
+#
+#    print 'constexpr uint8_t ccc_low_byte_masks[] = {'
+#    for i in range(min_ccc_cp >> 8, max_ccc_cp >> 8):
+#        if i in byte_masks:
+#            print hex(byte_masks[i]),','
+#        else:
+#            print 0,','
+#    print '};'
+
     (canon_all_cps, canon_decomposition_mapping) = \
       get_decompositions('UnicodeData.txt', cccs_dict, expand_decomp_canonical, True)
+
+#    sorted_decomp_keys = sorted(dict(canon_decomposition_mapping).keys())
+#    for k in sorted_decomp_keys:
+#        print hex(k)
+
     canon_decomposition_mapping = dict(canon_decomposition_mapping)
     (compat_all_cps, compat_decomposition_mapping) = \
       get_decompositions('UnicodeData.txt', cccs_dict, expand_decomp_compatible, False)
+
+#    sorted_decomp_keys = sorted(dict(compat_decomposition_mapping).keys())
+#    for k in sorted_decomp_keys:
+#        print hex(k)
+
     compat_decomposition_mapping = dict(compat_decomposition_mapping)
 
     canon_all_cps_string = '    ' + ',\n    '.join(map(lambda x: hex(x), canon_all_cps)) + ',\n'

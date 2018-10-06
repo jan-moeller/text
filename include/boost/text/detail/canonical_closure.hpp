@@ -142,7 +142,7 @@ namespace boost { namespace text { namespace detail {
         // 3b For each character in this set:
         for (auto comp : comps) {
             // 3b I Get the character's decomposition.
-            canonical_decomposition decomp = canonical_decompose(comp);
+            code_points const decomp = canonical_decompose(comp);
 
             bool skip = false;
             for (auto decomp_cp : decomp) {

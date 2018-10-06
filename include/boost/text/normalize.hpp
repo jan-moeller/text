@@ -74,7 +74,7 @@ namespace boost { namespace text {
         {
             while (first != last) {
                 auto const decomp = decompose(*first);
-                if (!ccc(decomp.storage_[0])) {
+                if (!ccc(*decomp.begin())) {
                     if (!detail::flush_buffer(buffer, flush))
                         return false;
                 }
@@ -621,7 +621,7 @@ namespace boost { namespace text {
             if (ccc && ccc < prev_ccc)
                 return false;
             prev_ccc =
-                decomp.size_ == 1 ? ccc : detail::ccc(*(decomp.end() - 1));
+                decomp.size() == 1 ? ccc : detail::ccc(*(decomp.end() - 1));
             ++first;
         }
         return true;

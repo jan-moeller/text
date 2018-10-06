@@ -133,7 +133,7 @@ namespace boost { namespace text {
             retain_case_bits_t retain_case_bits)
         {
             if (hangul_syllable(cp)) {
-                auto cps = decompose_hangul_syllable<3>(cp);
+                auto cps = decompose_hangul_syllable(cp);
                 return s2(
                     cps.begin(),
                     cps.end(),
