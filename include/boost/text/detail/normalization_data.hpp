@@ -37,7 +37,7 @@ namespace boost { namespace text { namespace detail {
             cps_ = storage_type{{cp0, cp1, cp2}};
         }
 
-        int size() const noexcept { return std::abs(size_); }
+        int size() const noexcept { return size_ < 0 ? -size_ : size_; }
 
         const_iterator begin() const noexcept
         {
