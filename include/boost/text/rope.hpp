@@ -155,6 +155,19 @@ namespace boost { namespace text {
         /** Returns the maximum size in bytes a rope can have. */
         size_type max_bytes() const noexcept { return PTRDIFF_MAX; }
 
+        /** Visits each segment s of *this and calls f(s).  Each segment is a
+            string_view or repeated_string_view.  Depending of the operation
+            performed on each segment, this may be more efficient than
+            iterating over [begin(), end()).
+
+            \pre Fn is an Invocable accepting a single argument of any of the
+            types listed above. */
+        template<typename Fn>
+        void foreach_segment(Fn && f) const
+        {
+            rope_.foreach_segment(std::forward<Fn>(f));
+        }
+
         /** Returns true if *this and rhs contain the same root node pointer.
             This is useful when you want to check for equality between two
             unencoded_ropes that are likely to have originated from the same
