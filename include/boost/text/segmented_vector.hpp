@@ -127,16 +127,6 @@ namespace boost { namespace text {
             }
         }
 
-        bool operator==(segmented_vector rhs) const noexcept
-        {
-            return compare(rhs) == 0;
-        }
-
-        bool operator!=(segmented_vector rhs) const noexcept
-        {
-            return compare(rhs) != 0;
-        }
-
         bool operator<(segmented_vector rhs) const noexcept
         {
             return compare(rhs) < 0;
