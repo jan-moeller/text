@@ -21,32 +21,35 @@ namespace boost { namespace text { namespace detail {
         using iterator_type = Iter;
 
         constexpr reverse_iterator() noexcept : it_() {}
-        explicit constexpr reverse_iterator(iterator_type it) noexcept : it_(it)
+        explicit constexpr reverse_iterator(iterator_type it) noexcept : it_(it), temp_(it)
         {}
 
         constexpr reverse_iterator(reverse_iterator const & other) noexcept :
-            it_(other.it_)
+            it_(other.it_),
+            temp_(other.temp_)
         {}
 
         template<typename Iter2>
         constexpr reverse_iterator(
             const reverse_iterator<Iter2> & other) noexcept :
-            it_(other.base())
+            it_(other.base()),
+            temp_(other.base())
         {}
 
         constexpr iterator_type base() const noexcept { return it_; }
 
         BOOST_TEXT_CXX14_CONSTEXPR reference operator*() const noexcept
         {
-            Iter temp = it_;
-            return *--temp;
+            temp_ = it_;
+            return *--temp_;
         }
 
-        constexpr pointer operator->() const noexcept { return &**this; }
+        constexpr pointer operator->() const noexcept { operator*(); return temp_.operator->(); }
 
         constexpr reference operator[](difference_type n) const noexcept
         {
-            return *(it_ - n - 1);
+            temp_ = it_ - n - 1;
+            return *temp_;
         }
 
         constexpr reverse_iterator operator+(difference_type n) const noexcept
@@ -101,6 +104,7 @@ namespace boost { namespace text { namespace detail {
 
     private:
         Iter it_;
+        mutable Iter temp_;
     };
 
     template<typename Iter>
