@@ -20,7 +20,7 @@ namespace boost { namespace text { namespace detail {
         using reference = typename std::iterator_traits<Iter>::reference;
         using iterator_type = Iter;
 
-        constexpr reverse_iterator() noexcept : it_() {}
+        constexpr reverse_iterator() noexcept : it_(), temp_() {}
         explicit constexpr reverse_iterator(iterator_type it) noexcept : it_(it), temp_(it)
         {}
 
@@ -38,19 +38,19 @@ namespace boost { namespace text { namespace detail {
 
         constexpr iterator_type base() const noexcept { return it_; }
 
-        BOOST_TEXT_CXX14_CONSTEXPR reference operator*() const noexcept
+        reference operator*() const noexcept
         {
             temp_ = it_;
             return *--temp_;
         }
 
-        BOOST_TEXT_CXX14_CONSTEXPR pointer operator->() const noexcept
+        pointer operator->() const noexcept
         {
             operator*();
             return temp_.operator->();
         }
 
-        BOOST_TEXT_CXX14_CONSTEXPR reference operator[](difference_type n) const noexcept
+        reference operator[](difference_type n) const noexcept
         {
             temp_ = it_ - n - 1;
             return *temp_;

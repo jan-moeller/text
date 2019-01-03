@@ -133,6 +133,7 @@ TEST(const_reverse_char_iterator, test_default_ctor)
         EXPECT_EQ(it2 - it1, 0);
     }
 
+#if false
     {
         constexpr text::detail::const_reverse_char_iterator it1;
         constexpr text::detail::const_reverse_char_iterator it2;
@@ -149,6 +150,7 @@ TEST(const_reverse_char_iterator, test_default_ctor)
         static_assert(it1 - it2 == 0, "");
         static_assert(it2 - it1 == 0, "");
     }
+#endif
 }
 
 TEST(const_reverse_char_iterator, test_c_str_ctor)
@@ -303,6 +305,7 @@ TEST(const_reverse_char_iterator, test_c_str_ctor_constexpr)
         static_assert(it - it == 0, "");
     }
 
+#if false
     {
         constexpr text::detail::const_reverse_char_iterator first =
             tv_a.rbegin();
@@ -361,6 +364,7 @@ TEST(const_reverse_char_iterator, test_c_str_ctor_constexpr)
             count_tv_a_elements() == 1,
             "ensure that iterator works in a constexpr function loop");
     }
+#endif
 }
 
 #endif
@@ -993,6 +997,7 @@ TEST(const_reverse_repeated_chars_iterator, test_c_str_ctor_constexpr)
         static_assert(it - it == 0, "");
     }
 
+#if false
     {
         constexpr text::detail::const_reverse_repeated_chars_iterator first(
             text::detail::const_repeated_chars_iterator(
@@ -1117,6 +1122,7 @@ TEST(const_reverse_repeated_chars_iterator, test_c_str_ctor_constexpr)
             reverse_count_tv_abc_elements_repeat() == 9,
             "ensure that iterator works in a constexpr function loop");
     }
+#endif
 }
 
 #endif
