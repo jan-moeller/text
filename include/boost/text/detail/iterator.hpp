@@ -44,9 +44,13 @@ namespace boost { namespace text { namespace detail {
             return *--temp_;
         }
 
-        constexpr pointer operator->() const noexcept { operator*(); return temp_.operator->(); }
+        BOOST_TEXT_CXX14_CONSTEXPR pointer operator->() const noexcept
+        {
+            operator*();
+            return temp_.operator->();
+        }
 
-        constexpr reference operator[](difference_type n) const noexcept
+        BOOST_TEXT_CXX14_CONSTEXPR reference operator[](difference_type n) const noexcept
         {
             temp_ = it_ - n - 1;
             return *temp_;
